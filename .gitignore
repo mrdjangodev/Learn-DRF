@@ -1,6 +1,10 @@
 __pycache__
 env
 replicate.py
+replicate.txt
+
 initial_project/env
 initial_project/db.sqlite3
 initial_project/requirements.txt
+
+todo/db.sqlite3
