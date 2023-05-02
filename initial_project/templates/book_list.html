@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Book List Title</title>
+        <h1>All books in here</h1>
+    </head>
+    <body>
+        {% for book in object_list %}
+            <ul>
+                <li>Title: {{ book.title }}</li>
+                <li>Subtitle: {{ book.subtitle }}</li>
+                <li>Author: {{ book.author }}</li>
+                <li>ISBN: {{ book.isbn }}</li>
+            </ul>
+        {% endfor %}
+    </body>
+</html>
