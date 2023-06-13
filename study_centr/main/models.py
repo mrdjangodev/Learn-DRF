@@ -58,3 +58,36 @@ class CustomUser(AbstractBaseUser):
     def __str__(self):
         return self.email
 
+
+class Subject(models.Model):
+    class Meta:
+        verbose_name_plural = 'Subjects'
+        ordering = ['-name']
+    name = models.CharField(max_length=50, unique=True)
+    
+    def __str__(self):
+        return self.name
+
+    def get_all_groups(self):
+        return self.group.objects.set_all()
+    
+    def get_all_schedules(self):
+        return self.schedule.objects.set_all()
+    
+    def calculate_kpi(self):
+        pass
+
+
+class Room(models.Model):
+    class Meta:
+        verbose_name_plural = 'Rooms'
+        ordering = ['name']
+    name = models.CharField(max_length=50, unique=True)
+    
+    def __str__(self) -> str:
+        return self.name
+    
+    def get_all_schedules(self):
+        return self.schedule.object.set_all()
+    
+
