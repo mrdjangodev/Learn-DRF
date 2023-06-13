@@ -28,3 +28,17 @@ class Group(models.Model):
     
     def get_all_schedules(self):
         return self.schedule.objects.set_all()
+    
+    
+class Schedule(models.Model):
+    class Meta:
+        verbose_name_plural = 'Schedules'
+        ordering = ['-start_time']
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=True)
+    start_time = models.DateTimeField()
+    finish_time = models.DateTimeField()
+    
+    def __str__(self) -> str:
+        return f"room: {self.room} | group: {self.group} | is_active: {self.is_active}"
