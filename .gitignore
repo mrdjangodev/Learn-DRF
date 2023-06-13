@@ -11,3 +11,4 @@ todo/db.sqlite3
 
 blog_api/db.sqlite3
 library/db.sqlite3
+study_centr/db.sqlite3
