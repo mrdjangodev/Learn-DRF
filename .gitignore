@@ -10,3 +10,4 @@ initial_project/requirements.txt
 todo/db.sqlite3
 
 blog_api/db.sqlite3
+library/db.sqlite3
