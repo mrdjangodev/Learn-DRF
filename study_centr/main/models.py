@@ -73,9 +73,6 @@ class Subject(models.Model):
     
     def get_all_schedules(self):
         return self.schedule.objects.set_all()
-    
-    def calculate_kpi(self):
-        pass
 
 
 class Room(models.Model):
