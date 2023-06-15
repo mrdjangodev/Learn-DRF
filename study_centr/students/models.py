@@ -22,9 +22,12 @@ class Student(models.Model):
     
     def get_all_schedules(self):
         result = []
-        for group in self.group.all().filter(is_active=True):
+        for group in self.group.set_all().filter(is_active=True):
             result.append(*tuple(group.get_all_schedules()))
         return result
+
+    def get_all_payments(self):
+        return self.studentpayment.set_all()
     
     
 class StudentPayment(models.Model):
@@ -36,6 +39,8 @@ class StudentPayment(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     
+    def __str__(self):
+        return f"{self.adminstrator} | {self.student}"
     
 @receiver(post_save, sender=StudentPayment)
 def update_student_balance(sender, instance, created, **kwargs):

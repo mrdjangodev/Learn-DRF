@@ -67,7 +67,7 @@ class Teacher(models.Model):
         return f"{self.user}"
     
     def get_all_groups(self):
-        return self.group.objects.set_all()
+        return self.group.set_all()
     
     def get_all_schedules(self):
-        return self.schedule.object.all()
+        return self.schedule.set_all()
