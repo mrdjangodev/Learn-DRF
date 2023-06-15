@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from .models import Group
+from .serializers import GroupSerializer
 
-# Create your views here.
+class GroupViewSet(viewsets.ModelViewSet):
+    queryset = Group.objects.select_related('teacher__user').prefetch_related('schedule_set', 'student_set').all()
+    serializer_class = GroupSerializer

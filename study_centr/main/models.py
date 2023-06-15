@@ -71,9 +71,6 @@ class Subject(models.Model):
     def get_all_groups(self):
         return self.group.set_all()
     
-    def get_all_schedules(self):
-        return self.schedule.set_all()
-
 
 class Room(models.Model):
     class Meta:

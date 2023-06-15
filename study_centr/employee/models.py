@@ -66,8 +66,13 @@ class Teacher(models.Model):
     def __str__(self) -> str:
         return f"{self.user}"
     
+    def calculate_kpi(self):
+        pass
+    
     def get_all_groups(self):
         return self.group.set_all()
     
     def get_all_schedules(self):
         return self.schedule.set_all()
+    
+    
