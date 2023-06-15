@@ -4,17 +4,8 @@ from rest_framework import serializers
 
 from .models import CustomUser, Room, Subject
 from study.models import Schedule
-from study.serializers import ScheduleSerializer, GroupSerializer
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'phone')
-
-class UserDetail(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = '__all__'
+from study.serializers import GroupSerializer 
+from study.schedule_serializers import ScheduleSerializer
 
 
 class SubjectSerializer(serializers.ModelSerializer):

@@ -2,8 +2,9 @@ from rest_framework import serializers
 
 from .models import Teacher, Adminstrator, Accountant, Boss
 
-from main.serializers import UserSerializer
-from study.serializers import GroupSerializer, ScheduleSerializer
+from main.user_serializers import UserSerializer
+from study.serializers import GroupSerializer
+from study.schedule_serializers import ScheduleSerializer
 
 # serializers here
 

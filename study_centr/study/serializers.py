@@ -3,13 +3,17 @@ from rest_framework import serializers
 from .models import Schedule, Group
 
 from students.serializers import StudentSerializer
-from main.serializers import UserSerializer
-
-class ScheduleSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Schedule
-        fields = '__all__'
-        
+from main.user_serializers import UserSerializer
+from .schedule_serializers import ScheduleSerializer
+# class ScheduleSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Schedule
+#         fields = '__all__'
+    
+# class ScheduleDetailSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Schedule
+#         fields = '__all__'
 
 # class GroupSerializer(serializers.ModelSerializer):
 #     teacher_data = UserSerializer(source='teacher.user', read_only=True)
@@ -33,6 +37,11 @@ class ScheduleSerializer(serializers.ModelSerializer):
 #     def get_debtor_students(self, obj):
 #         debtors = obj.get_debtor_students()
 #         return StudentSerializer(debtors, many=True).data
+class GroupDetailSerializer(serializers.ModelSerializer):
+    teacher_data = UserSerializer(source='teacher.user', read_only=True)
+    class Meta:
+        model = Group
+        fields = ('id', 'subject', 'teacher_data', 'is_activ', 'created_at')
     
 
 class GroupSerializer(serializers.ModelSerializer):

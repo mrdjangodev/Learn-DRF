@@ -1,8 +1,8 @@
 from rest_framework import serializers
 
 from .models import Student, StudentPayment
-from study.serializers import ScheduleSerializer
-from main.serializers import UserSerializer
+from study.schedule_serializers import ScheduleSerializer
+from main.user_serializers import UserSerializer
 
 class StudentPaymentSerializer(serializers.ModelSerializer):
     class Meta:
