@@ -12,6 +12,17 @@ class StudentPaymentSerializer(serializers.ModelSerializer):
 
 class StudentSerializer(serializers.ModelSerializer):
     user_data = UserSerializer(source='user', read_only=True)
+
+    class Meta:
+        model = Student
+        fields = (
+            'id', 'user_data', 'is_active', 'balance', 'created_at'
+        )
+    
+    
+
+class StudentDetailSerializer(serializers.ModelSerializer):
+    user_data = UserSerializer(source='user', read_only=True)
     all_payments = serializers.SerializerMethodField()
     all_schedules = serializers.SerializerMethodField()
     class Meta:
