@@ -5,7 +5,8 @@ from .models import Teacher, Adminstrator, Accountant, Boss
 from main.user_serializers import UserSerializer
 from study.serializers import GroupSerializer
 from study.schedule_serializers import ScheduleSerializer
-
+from main.serializers import SubjectSerializer
+from .models import CustomUser
 # serializers here
 
 class BossesSerializer(serializers.ModelSerializer):
@@ -38,7 +39,7 @@ class AdminstratorDetailSerializer(serializers.ModelSerializer):
 
 class AccountantsSerializer(serializers.ModelSerializer):
     user_data = UserSerializer(source='user')
-    class Meta:
+    class Meta: 
         model = Accountant
         fields = ('id', 'user_data', 'is_active', 'salary', 'created_at')
     
@@ -50,12 +51,30 @@ class AccountantDetailSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'is_active', 'salary', 'created_at')
         
     
+# class TeachersSerializer(serializers.ModelSerializer):
+#     user_data = UserSerializer(source='user')
+#     class Meta:
+#         model = Teacher
+#         fields = ('id', 'user_data', 'is_active', 'salary', 'subjects', 'created_at')
+        
 class TeachersSerializer(serializers.ModelSerializer):
     user_data = UserSerializer(source='user')
+
     class Meta:
         model = Teacher
         fields = ('id', 'user_data', 'is_active', 'salary', 'subjects', 'created_at')
-        
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        # username = user_data.pop('username')
+        # first_name = user_data.pop('first_name')
+        # password = 'mr0101012'
+        # user = CustomUser.objects.create(username=username, password=password, **user_data)
+        user = CustomUser.objects.create(**user_data)
+        subjects = validated_data.pop('subjects', [])
+        teacher = Teacher.objects.create(user=user, **validated_data)
+        teacher.subjects.set(subjects)
+        return teacher
 
 class TeacherDetailSerializer(serializers.ModelSerializer):
     user_data = UserSerializer(source='user')
