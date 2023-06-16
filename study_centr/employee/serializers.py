@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework import serializers
 
 from .models import Teacher, Adminstrator, Accountant, Boss
@@ -66,23 +67,20 @@ class TeachersSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')
-        # username = user_data.pop('username')
-        # first_name = user_data.pop('first_name')
-        # password = 'mr0101012'
-        # user = CustomUser.objects.create(username=username, password=password, **user_data)
         user = CustomUser.objects.create(**user_data)
         subjects = validated_data.pop('subjects', [])
         teacher = Teacher.objects.create(user=user, **validated_data)
         teacher.subjects.set(subjects)
         return teacher
+    
 
 class TeacherDetailSerializer(serializers.ModelSerializer):
-    user_data = UserSerializer(source='user')
+    user_data = UserSerializer(source='user', required=False, read_only=True)
     all_groups = serializers.SerializerMethodField('get_all_groups')
     all_schedules = serializers.SerializerMethodField('get_all_schedules')
     class Meta:
         model = Teacher
-        fields = ('id', 'user_data', 'is_active', 'salary', 'subjects', 'created_at', 
+        fields = ('id', 'user_data', 'user', 'is_active', 'salary', 'subjects', 'created_at', 
                  'all_groups', 'all_schedules')
         
     def get_all_groups(self, obj):
@@ -93,4 +91,4 @@ class TeacherDetailSerializer(serializers.ModelSerializer):
         schedules = obj.get_all_schedules()
         return ScheduleSerializer(schedules, many=True, read_only=True).data
     
-
+   

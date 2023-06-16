@@ -2,7 +2,7 @@ from django.urls import path
 from  .views import (BossesListView, BossDetailView, 
                      AdminstratorsListView, AdminstratorDetailView,
                      AccountantsListView, AccountantDetailView,
-                     TeacherListView, TeacherDetailView)
+                     TeacherListView, TeacherDetailView, update_teacher)
 
 
 urlpatterns = [
@@ -16,6 +16,7 @@ urlpatterns = [
     path('accountant/<int:pk>/', AccountantDetailView.as_view()),
     
     path('teachers/', TeacherListView.as_view()),
+    # path('teachers/<int:pk>/', update_teacher),
     path('teacher/<int:pk>/', TeacherDetailView.as_view()),
     
 ]
