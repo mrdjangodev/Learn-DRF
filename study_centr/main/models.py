@@ -69,7 +69,7 @@ class Subject(models.Model):
         return self.name
 
     def get_all_groups(self):
-        return self.group.set_all()
+        return self.group_set.all()
     
 
 class Room(models.Model):
@@ -82,6 +82,6 @@ class Room(models.Model):
         return self.name
     
     def get_all_schedules(self):
-        return self.schedule.set_all()
+        return self.schedule_set.all()
     
 

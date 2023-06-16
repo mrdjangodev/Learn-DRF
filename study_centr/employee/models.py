@@ -52,7 +52,6 @@ class Accountant(models.Model):
     def calculate_kpi(self):
         pass
     
-
 class Teacher(models.Model):
     class Meta:
         verbose_name_plural = 'Teachers'
@@ -70,9 +69,11 @@ class Teacher(models.Model):
         pass
     
     def get_all_groups(self):
-        return self.group.set_all()
+        return self.group_set.all()
     
     def get_all_schedules(self):
-        return self.schedule.set_all()
-    
+        schedules = []
+        for group in self.get_all_groups():
+            schedules.extend(group.schedule_set.all())
+        return schedules
     

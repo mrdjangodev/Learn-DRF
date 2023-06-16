@@ -23,7 +23,7 @@ class Service(models.Model):
         return self.price * self.serviceuser.set_all().count()
     
     def get_all_schedules(self):
-        return self.schedule.set_all()
+        return self.schedule_set.all()
 
 
 class SocialMedia(models.Model):
@@ -40,7 +40,7 @@ class SocialMedia(models.Model):
         return self.name
     
     def get_number_of_interestors(self):
-        return self.interestor.set_all()
+        return self.interestor_set.all()
 
 
 class Interestor(models.Model):
@@ -75,7 +75,7 @@ class ServiceUser(models.Model):
         return self.full_name
     
     def get_all_usages(self):
-        return self.serviceusage.set_all()
+        return self.serviceusage_set.all()
     
 
 class ServiceUsage(models.Model):

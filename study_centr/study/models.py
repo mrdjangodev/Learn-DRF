@@ -17,17 +17,21 @@ class Group(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     
+    def __str__(self):
+        return self.name
+    
+    
     def get_debtor_students(self):
-        return self.students.objects.set_all().filter(balance__lt=0)
+        return self.students.objects_set.all().filter(balance__lt=0)
         
     def get_all_students(self):
-        return self.students.objects.set_all()
+        return self.students.objects_set.all()
         
     def get_all_active_students(self):
-        return self.students.objects.set_all().filter(is_active=True)
+        return self.students.objects_set.all().filter(is_active=True)
     
     def get_all_schedules(self):
-        return self.schedule.objects.set_all()
+        return self.schedule.prefetch_related('teachers').all()
     
     
 class Schedule(models.Model):

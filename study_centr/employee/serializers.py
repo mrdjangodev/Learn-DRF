@@ -9,58 +9,58 @@ from study.schedule_serializers import ScheduleSerializer
 # serializers here
 
 class BossesSerializer(serializers.ModelSerializer):
-    user_data = UserSerializer(source='user', read_only=True)
+    user_data = UserSerializer(source='user')
     class Meta:
         model = Boss
         fields = ('id', 'user_data', 'is_active', 'salary', 'created_at')
     
 
 class BossDetailSerializer(serializers.ModelSerializer):
-    user_data = UserSerializer(source='user', read_only=True)
+    user_data = UserSerializer(source='user')
     class Meta:
         model = Boss
-        fields = ('id', 'user_data', 'is_active', 'salary', 'created_at')
+        fields = ('id', 'user', 'is_active', 'salary', 'created_at')
     
     
 class AdminstratorsSerializer(serializers.ModelSerializer):
-    user_data = UserSerializer(source='user', read_only=True)
+    user_data = UserSerializer(source='user')
     class Meta:
         model = Adminstrator
         fields = ('id', 'user_data', 'is_active', 'salary', 'created_at')
 
 
 class AdminstratorDetailSerializer(serializers.ModelSerializer):
-    user_data = UserSerializer(source='user', read_only=True)
+    user_data = UserSerializer(source='user')
     class Meta:
         model = Adminstrator
-        fields = ('id', 'user_data', 'is_active', 'salary', 'created_at')
+        fields = ('id', 'user', 'is_active', 'salary', 'created_at')
 
 
 class AccountantsSerializer(serializers.ModelSerializer):
-    user_data = UserSerializer(source='user', read_only=True)
+    user_data = UserSerializer(source='user')
     class Meta:
         model = Accountant
         fields = ('id', 'user_data', 'is_active', 'salary', 'created_at')
     
     
 class AccountantDetailSerializer(serializers.ModelSerializer):
-    user_data = UserSerializer(source='user', read_only=True)
+    user_data = UserSerializer(source='user')
     class Meta:
         model = Accountant
-        fields = ('id', 'user_data', 'is_active', 'salary', 'created_at')
+        fields = ('id', 'user', 'is_active', 'salary', 'created_at')
         
     
 class TeachersSerializer(serializers.ModelSerializer):
-    user_data = UserSerializer(source='user', read_only=True)
+    user_data = UserSerializer(source='user')
     class Meta:
         model = Teacher
         fields = ('id', 'user_data', 'is_active', 'salary', 'subjects', 'created_at')
         
 
 class TeacherDetailSerializer(serializers.ModelSerializer):
-    user_data = UserSerializer(source='user', read_only=True)
-    all_groups = serializers.SerializerMethodField()
-    all_groups = serializers.SerializerMethodField()
+    user_data = UserSerializer(source='user')
+    all_groups = serializers.SerializerMethodField('get_all_groups')
+    all_schedules = serializers.SerializerMethodField('get_all_schedules')
     class Meta:
         model = Teacher
         fields = ('id', 'user_data', 'is_active', 'salary', 'subjects', 'created_at', 
