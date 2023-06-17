@@ -29,7 +29,7 @@ class GroupDetailSerializer(serializers.ModelSerializer):
         return StudentSerializer(debtor_students, many=True).data
 
     def get_all_students(self, obj):
-        all_students = obj.student_set.all()
+        all_students = obj.get_all_students()
         return StudentSerializer(all_students, many=True).data
 
     def get_all_active_students(self, obj):

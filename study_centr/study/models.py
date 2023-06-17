@@ -22,10 +22,10 @@ class Group(models.Model):
     
     
     def get_debtor_students(self):
-        return self.students.objects_set.perfetch_related('group').all().filter(balance__lt=0)
+        return self.student.objects_set.perfetch_related('group').all().filter(balance__lt=0)
         
     def get_all_students(self):
-        return self.students.objects_set.select_related('user').perfetch_related('group').all()
+        return self.student.objects_set.select_related('user').perfetch_related('group').all()
         
     def get_all_active_students(self):
         return self.get_all_students.filter(is_active=True)
