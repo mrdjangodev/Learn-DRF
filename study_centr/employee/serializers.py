@@ -18,7 +18,7 @@ class BossesSerializer(serializers.ModelSerializer):
     
 
 class BossDetailSerializer(serializers.ModelSerializer):
-    user_data = UserSerializer(source='user')
+    user_data = UserSerializer(source='user', read_only=True)
     class Meta:
         model = Boss
         fields = ('id', 'user', 'is_active', 'salary', 'created_at')
@@ -32,10 +32,10 @@ class AdminstratorsSerializer(serializers.ModelSerializer):
 
 
 class AdminstratorDetailSerializer(serializers.ModelSerializer):
-    user_data = UserSerializer(source='user')
+    user_data = UserSerializer(source='user', read_only=True)
     class Meta:
         model = Adminstrator
-        fields = ('id', 'user', 'is_active', 'salary', 'created_at')
+        fields = ('id', 'user_data', 'is_active', 'salary', 'created_at')
 
 
 class AccountantsSerializer(serializers.ModelSerializer):
@@ -46,7 +46,7 @@ class AccountantsSerializer(serializers.ModelSerializer):
     
     
 class AccountantDetailSerializer(serializers.ModelSerializer):
-    user_data = UserSerializer(source='user')
+    user_data = UserSerializer(source='user', read_only=True)
     class Meta:
         model = Accountant
         fields = ('id', 'user', 'is_active', 'salary', 'created_at')
@@ -80,7 +80,7 @@ class TeacherDetailSerializer(serializers.ModelSerializer):
     all_schedules = serializers.SerializerMethodField('get_all_schedules')
     class Meta:
         model = Teacher
-        fields = ('id', 'user_data', 'user', 'is_active', 'salary', 'subjects', 'created_at', 
+        fields = ('id', 'user_data', 'is_active', 'salary', 'subjects', 'created_at', 
                  'all_groups', 'all_schedules')
         
     def get_all_groups(self, obj):
