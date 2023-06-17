@@ -22,7 +22,7 @@ class Group(models.Model):
     
     
     def get_debtor_students(self):
-        return self.students.objects_set.all().filter(balance__lt=0)
+        return self.students.objects_set.perfetch_related('group').all().filter(balance__lt=0)
         
     def get_all_students(self):
         return self.students.objects_set.all()

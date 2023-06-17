@@ -25,15 +25,15 @@ class GroupDetailSerializer(serializers.ModelSerializer):
         read_only_fields = ('created_at', 'debtor_students', 'all_students', 'active_students', 'schedules')
 
     def get_debtor_students(self, obj):
-        debtor_students = obj.students_set.filter(balance__lt=0)
+        debtor_students = obj.student_set.select_related('user').all().filter(balance__lt=0)
         return StudentSerializer(debtor_students, many=True).data
 
     def get_all_students(self, obj):
-        all_students = obj.students_set.all()
+        all_students = obj.student_set.all()
         return StudentSerializer(all_students, many=True).data
 
     def get_all_active_students(self, obj):
-        active_students = obj.students_set.filter(is_active=True)
+        active_students = obj.student_set.filter(is_active=True)
         return StudentSerializer(active_students, many=True).data
 
     def get_all_schedules(self, obj):
