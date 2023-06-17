@@ -27,7 +27,7 @@ class BossDetailSerializer(serializers.ModelSerializer):
     user_data = UserSerializer(source='user', read_only=True)
     class Meta:
         model = Boss
-        fields = ('id', 'user', 'is_active', 'salary', 'created_at')
+        fields = ('id', 'user_data', 'is_active', 'salary', 'created_at')
     
     
 class AdminstratorsSerializer(serializers.ModelSerializer):
