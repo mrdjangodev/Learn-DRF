@@ -31,9 +31,8 @@ class StudentPaymentSerializer(serializers.ModelSerializer):
 
 
 class StudentPaymentDetailSerializer(serializers.ModelSerializer):
-    adminstrator_detail = AdminstratorsSerializer(source="adminstrator", read_only=True)
-    student_detail = StudentSerializer(source='student', read_only=True)
-    # student = serializers.ChoiceField(choices=Student.objects.all(), write_only=True)
+    adminstrator_data = AdminstratorsSerializer(source="adminstrator", read_only=True)
+    student_data = StudentSerializer(source='student', read_only=True)
     class Meta:
         model = StudentPayment
         fields = (
