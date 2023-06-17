@@ -15,12 +15,12 @@ class SubjectSerializer(serializers.ModelSerializer):
         
 
 class SubjectDetailSerializer(serializers.ModelSerializer):
-    all_groups = serializers.SerializerMethodField()
+    all_groups = serializers.SerializerMethodField('get_all_groups')
     class Meta:
         model = Room
         fields = ('id', 'name', 'all_groups')
 
-    def get_all_Groups(self, obj):
+    def get_all_groups(self, obj):
         groups = obj.get_all_groups()
         return GroupSerializer(groups, many=True).data
         

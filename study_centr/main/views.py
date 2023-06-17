@@ -38,5 +38,5 @@ class SubjectViewSet(generics.ListCreateAPIView):
    
 
 class SubjectDetailViewSet(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Subject.objects.prefetch_related('group')
+    queryset = Subject.objects.all()
     serializer_class = SubjectDetailSerializer

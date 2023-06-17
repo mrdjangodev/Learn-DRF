@@ -11,5 +11,5 @@ urlpatterns = [
     path('rooms/<int:pk>/', RoomDetailViewSet.as_view()),
     
     path('subjects/', SubjectViewSet.as_view()),
-    path('subjects/<int:pk>/', SubjectDetailViewSet.as_view()),
+    path('subject/<int:pk>/', SubjectDetailViewSet.as_view()),
 ]
