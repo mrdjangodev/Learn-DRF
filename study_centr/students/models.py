@@ -22,12 +22,12 @@ class Student(models.Model):
     
     def get_all_schedules(self):
         result = []
-        for group in self.group.set_all().filter(is_active=True):
-            result.append(*tuple(group.get_all_schedules()))
+        for group in self.group.all().filter(is_active=True):
+            result.extend(group.get_all_schedules())
         return result
 
     def get_all_payments(self):
-        return self.studentpayment.set_all()
+        return self.studentpayment_set.all()
     
     
 class StudentPayment(models.Model):
