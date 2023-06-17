@@ -49,6 +49,11 @@ class AccountantsSerializer(serializers.ModelSerializer):
         model = Accountant
         fields = ('id', 'user_data', 'is_active', 'salary', 'created_at')
     
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        user = CustomUser.objects.create(**user_data)
+        accountant = Accountant.objects.create(user=user, **validated_data)
+        return accountant   
     
 class AccountantDetailSerializer(serializers.ModelSerializer):
     user_data = UserSerializer(source='user', read_only=True)
