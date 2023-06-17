@@ -25,13 +25,12 @@ class Group(models.Model):
         return self.students.objects_set.perfetch_related('group').all().filter(balance__lt=0)
         
     def get_all_students(self):
-        return self.students.objects_set.all()
+        return self.students.objects_set.select_related('user').perfetch_related('group').all()
         
     def get_all_active_students(self):
-        return self.students.objects_set.all().filter(is_active=True)
+        return self.get_all_students.filter(is_active=True)
     
     def get_all_schedules(self):
-        # return self.schedule.prefetch_related('teachers').all()
         return self.schedule_set.select_related('group', 'room')
     
     
