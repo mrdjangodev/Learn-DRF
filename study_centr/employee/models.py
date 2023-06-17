@@ -1,7 +1,7 @@
 from django.db import models
 
-
 from main.models import CustomUser, Subject
+# from study.models import Schedule
 # Create your models here.
 
 class Boss(models.Model):
@@ -68,12 +68,15 @@ class Teacher(models.Model):
     def calculate_kpi(self):
         pass
     
-    def get_all_groups(self):
-        return self.group_set.all()
+    # def get_all_groups(self):
+    #     return self.group_set.all()
     
     def get_all_schedules(self):
         schedules = []
         for group in self.get_all_groups():
-            schedules.extend(group.schedule_set.all())
+            schedules.extend(group.schedule_set.all().select_related('group', 'room'))
         return schedules
     
+    def get_all_groups(self):
+        return self.group_set.select_related('teacher').all()
+        # pass

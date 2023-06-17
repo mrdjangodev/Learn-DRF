@@ -32,7 +32,7 @@ class Group(models.Model):
     
     def get_all_schedules(self):
         # return self.schedule.prefetch_related('teachers').all()
-        return self.schedule_set.all()
+        return self.schedule_set.select_related('group', 'room')
     
     
 class Schedule(models.Model):
