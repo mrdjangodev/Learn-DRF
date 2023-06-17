@@ -41,12 +41,31 @@ class AccountantDetailView(RetrieveUpdateDestroyAPIView):
     
     
 class TeacherListView(ListCreateAPIView):
-    queryset = Teacher.objects.all()
+    # queryset = Teacher.objects.all()
+    queryset = Teacher.objects.prefetch_related('user').all() # I choose fastest queryset
+    # queryset = Teacher.objects.select_related('user').all()
+    """Teacher.objects.all(): This queryset fetches all the teacher objects from the database 
+        without any optimization. The advantage of using this queryset is that it is simple and 
+        easy to use. However, the disadvantage is that it can be slow if you have a large number 
+        of teacher objects in your database, as it fetches all the data at once.
+
+        Teacher.objects.prefetch_related('user').all(): This queryset uses prefetch_related to fetch 
+        the related user objects in a separate query to avoid N+1 queries. The advantage of using this 
+        queryset is that it reduces the number of database queries required to fetch related user objects,
+        which can significantly improve performance. The disadvantage is that it can be memory-intensive 
+        if you have a large number of related objects.
+
+        Teacher.objects.select_related('user').all(): This queryset uses select_related to fetch 
+        the related user objects in a single query instead of separate queries. The advantage of 
+        using this queryset is that it is more efficient than prefetch_related, as it requires less 
+        memory. The disadvantage is that it can be slower than prefetch_related if you have a large 
+        number of related objects, as it fetches all the related objects at once.
+    """
     serializer_class = TeachersSerializer
     
 
 class TeacherDetailView(RetrieveUpdateDestroyAPIView):
-    queryset = Teacher.objects.all()
+    queryset = Teacher.objects.select_related('user').prefetch_related('subjects').all()
     serializer_class = TeacherDetailSerializer
     
     # def perform_update(self, serializer):
