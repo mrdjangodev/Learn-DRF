@@ -15,7 +15,13 @@ class BossesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Boss
         fields = ('id', 'user_data', 'is_active', 'salary', 'created_at')
-    
+        
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        user = CustomUser.objects.create(**user_data)
+        boss = Boss.objects.create(user=user, **validated_data)
+        return boss   
+
 
 class BossDetailSerializer(serializers.ModelSerializer):
     user_data = UserSerializer(source='user', read_only=True)

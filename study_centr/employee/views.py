@@ -10,7 +10,7 @@ from .forms import TeacherForm
 from main.models import CustomUser
 # Create your views here.
 
-class BossesListView(ListAPIView):
+class BossesListView(ListCreateAPIView):
     queryset = Boss.objects.all()
     serializer_class = BossesSerializer
     
