@@ -11,32 +11,33 @@ from main.models import CustomUser
 # Create your views here.
 
 class BossesListView(ListCreateAPIView):
-    queryset = Boss.objects.all()
+    queryset = Boss.objects.prefetch_related('user')
     serializer_class = BossesSerializer
     
 
-class BossDetailView(RetrieveAPIView):
-    queryset = Boss.objects.all()
+class BossDetailView(RetrieveAPIView): 
+    queryset = Boss.objects.select_related('user')
     serializer_class = BossDetailSerializer
     
 
 class AdminstratorsListView(ListCreateAPIView):
-    queryset = Adminstrator.objects.all()
+    queryset = Adminstrator.objects.prefetch_related('user').all()
     serializer_class = AdminstratorsSerializer
     
 
 class AdminstratorDetailView(RetrieveUpdateDestroyAPIView):
-    queryset = Adminstrator.objects.all()
+    queryset = Adminstrator.objects.select_related('user')
     serializer_class = AdminstratorDetailSerializer
     
 
 class AccountantsListView(ListCreateAPIView):
-    queryset = Accountant.objects.all()
+    queryset = Accountant.objects.prefetch_related('user')
     serializer_class = AccountantsSerializer
     
 
 class AccountantDetailView(RetrieveUpdateDestroyAPIView):
-    queryset = Accountant.objects.all()
+    queryset = Accountant.objects.select_related('user')
+    #I chose select related in this view cuz I take only one related object in this view
     serializer_class = AccountantDetailSerializer
     
     
