@@ -27,7 +27,8 @@ class RoomViewSet(generics.ListCreateAPIView):
    
 
 class RoomDetailViewSet(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Room.objects.prefetch_related('schedule')
+    queryset = Room.objects.all()
+    # queryset = Room.objects.prefetch_related('schedule')
     serializer_class = RoomDetailSerializer
    
    

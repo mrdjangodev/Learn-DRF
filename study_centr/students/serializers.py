@@ -61,3 +61,4 @@ class StudentDetailSerializer(serializers.ModelSerializer):
     
     def get_balance(self, obj):
         return obj.balance
+    
