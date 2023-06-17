@@ -3,6 +3,7 @@ from django.db import models
 
 from main.models import Room, Subject
 from employee.models import Teacher
+# from students.models import Student
 # Create your models here.
 
 class Group(models.Model):
@@ -20,18 +21,17 @@ class Group(models.Model):
     def __str__(self):
         return self.name
     
-    
     def get_debtor_students(self):
-        return self.student.objects_set.perfetch_related('group').all().filter(balance__lt=0)
-        
+        return self.student_set.select_related('user').all().filter(balance__lt=0)
+
     def get_all_students(self):
-        return self.student.objects_set.select_related('user').perfetch_related('group').all()
-        
+        return self.student_set.select_related('user').all()
+
     def get_all_active_students(self):
-        return self.get_all_students.filter(is_active=True)
+        return self.student_set.select_related('user').all().filter(is_active=True)
     
     def get_all_schedules(self):
-        return self.schedule_set.select_related('group', 'room')
+        return self.schedule_set.select_related('room').all()
     
     
 class Schedule(models.Model):
