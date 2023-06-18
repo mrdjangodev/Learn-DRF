@@ -5,6 +5,7 @@ from .views import (
     ServiceUserView, ServiceUserDetailView,
     ServiceUsageView, ServiceUsageDetailView,
     SocialMediaView, SocialMediaDetailView,
+    InterestorsView, InterestorDetailView,
 )
 
 urlpatterns = [
@@ -19,4 +20,7 @@ urlpatterns = [
     
     path('social-medias/', SocialMediaView.as_view(), name="social_medias"),
     path('social-media/<int:pk>/', SocialMediaDetailView.as_view(), name='social_media_detail'),
+    
+    path('interestors/', InterestorsView.as_view(), name='interestors'),
+    path('interestor/<int:pk>/', InterestorDetailView.as_view(), name="interestor_detil"),
 ]
