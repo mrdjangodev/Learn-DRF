@@ -32,7 +32,7 @@ class ServicesSerializer(serializers.ModelSerializer):
         return obj.get_total_income()
     
 
-class ServicesDetailSerializer(serializers.ModelSerializer):
+class ServiceDetailSerializer(serializers.ModelSerializer):
     total_income = serializers.SerializerMethodField("get_total_income", read_only=True)
     all_users = serializers.SerializerMethodField("get_all_users", read_only=True)
     all_usages = serializers.SerializerMethodField("get_all_usages", read_only=True)
