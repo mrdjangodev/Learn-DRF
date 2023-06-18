@@ -53,7 +53,7 @@ class Service(models.Model):
         return self.serviceusage_set.filter(created_at__month=current_month).select_related('user', 'service')
     
     def get_total_income(self):
-        return self.serviceusage_set.filter(is_done=True).aggregate(total_income=models.Sum('service__price'))['total_income'] or 0
+        return self.serviceusage_set.filter(payment_done=True).aggregate(total_income=models.Sum('service__price'))['total_income'] or 0
 
 
 class SocialMedia(models.Model):
