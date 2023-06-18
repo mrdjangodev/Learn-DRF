@@ -20,11 +20,11 @@ class ServiceDetailView(RetrieveUpdateDestroyAPIView):
     
     
 class ServiceUserView(ListCreateAPIView):
-    queryset = ServiceUser.objects.prefetch_related('get_all_usages_set')
+    queryset = ServiceUser.objects.all()
     serializer_class = ServiceUserSerializer
     
 
 class ServiceUserDetailView(RetrieveUpdateDestroyAPIView):
-    queryset = ServiceUser.objects.prefetch_related('get_all_usages_set')
-    serializer_class = ServiceDetailSerializer
+    queryset = ServiceUser.objects.all()
+    serializer_class = ServiceUserDetailSerializer
     

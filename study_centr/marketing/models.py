@@ -125,7 +125,7 @@ class ServiceUsage(models.Model):
         verbose_name_plural = 'Service Usages'
         ordering = ['-created_at']
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(ServiceUser, on_delete=models.CASCADE)
     is_done = models.BooleanField(default=False)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
