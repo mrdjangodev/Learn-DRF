@@ -1,11 +1,11 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 # from time import datetime
 from datetime import timedelta, datetime
 
 
 from main.models import CustomUser
 from employee.models import Teacher
-# Create your models here.
 
 class Service(models.Model):
     class Meta:
@@ -134,21 +134,39 @@ class ServiceUsage(models.Model):
     def __str__(self) -> str:
         return f"{self.user} | {self.service}"
     
-
+    
+    
+#ServicePayment section start 
+def validate_service_payment(value):
+    if value.service_user != value.service_usage.user:
+        raise ValidationError(f"service_user should be the same with ({value.service_usage.user})")
+    
+    if value.service != value.service_usage.service:
+        raise ValidationError(f"service should be the same with ({value.service_usage.service})")
+    
+    if value.service.price > value.amount:
+        raise ValidationError(f'Amount should be Greater than or equal to ({value.service.price})')
+    
+    
+    
 class ServicePayment(models.Model):
     class Meta:
         verbose_name_plural = 'Service Payments'
         ordering = ['-created_at']
+    service_usage = models.ForeignKey(ServiceUsage, on_delete=models.CASCADE)
     service_user = models.ForeignKey(ServiceUser, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    service_usage = models.ForeignKey(ServiceUsage, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=15, decimal_places=2, default=0.0)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self) -> str:
-        return self.service_usage 
+        return f"{self.service_usage }"
     
-    
+    def clean(self):
+        super().clean()
+        validate_service_payment(self)
+        
+        
 # signals here
 from django.dispatch import receiver
 from django.db.models.signals import post_save
