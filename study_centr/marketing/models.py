@@ -27,6 +27,20 @@ class Service(models.Model):
     def get_all_usages(self):
         return self.serviceusage_set.prefetch_related('user', 'service')
     
+    def get_all_done_usages(self):
+        """
+        In general, it is better to apply the filter method 
+        before the prefetch_related method because it reduces 
+        the amount of data that needs to be retrieved from 
+        the database. The filter method applies a filter on the 
+        ServiceUsage objects before they are retrieved from 
+        the database, which means that only the relevant ServiceUsage 
+        objects will be retrieved. On the other hand,   
+        the prefetch_related method retrieves all related User 
+        and Service objects for all retrieved ServiceUsage objects, 
+        which can be a large amount of data if there are many ServiceUsage objects."""
+        return self.serviceusage_set.filter(is_done=True).prefetch_related('user', 'service')
+    
     def get_daily_usages(self):
         today = timezone.now().date()
         return self.serviceusage_set.filter(created_at__date=today).select_related('user', 'service')
