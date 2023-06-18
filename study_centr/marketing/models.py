@@ -60,7 +60,7 @@ class SocialMedia(models.Model):
     class Meta:
         verbose_name_plural = 'Social Medias'
         ordering = ['-created_at']
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, unique=True)
     description = models.TextField()
     followers = models.PositiveBigIntegerField(default=0)
     effect = models.DecimalField(max_digits=4, decimal_places=2, default=0.0) #that is precentage of visitors by this social media to centr
