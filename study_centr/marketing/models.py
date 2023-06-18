@@ -4,6 +4,7 @@ from django.db import models
 from main.models import CustomUser
 from employee.models import Teacher
 # Create your models here.
+from time import timezone
 
 class Service(models.Model):
     class Meta:
@@ -21,9 +22,6 @@ class Service(models.Model):
     
     def get_total_income(self):
         return self.price * self.serviceuser.set_all().count()
-    
-    def get_all_schedules(self):
-        return self.schedule_set.all()
 
 
 class SocialMedia(models.Model):
@@ -39,9 +37,21 @@ class SocialMedia(models.Model):
     def __str__(self) -> str:
         return self.name
     
-    def get_number_of_interestors(self):
-        return self.interestor_set.all()
+    def get_all_interestors(self):
+        return self.interestor_set.all().select_related('found_us')
 
+    def get_this_month_interestors(self):
+        current_month = timezone.now().month
+        return self.interestor_set.filter(created_at__month=current_month).select_related('found_us')
+
+    def get_this_week_interestors(self):
+        current_week = timezone.now().isocalendar()[1]
+        return self.interestor_set.filter(created_at__week=current_week).select_related('found_us')
+
+    def get_daily_interestors(self):
+        today = timezone.now().date()
+        return self.interestor_set.filter(created_at__date=today).select_related('found_us')
+    
 
 class Interestor(models.Model):
     class Meta:
@@ -75,7 +85,7 @@ class ServiceUser(models.Model):
         return self.full_name
     
     def get_all_usages(self):
-        return self.serviceusage_set.all()
+        return self.serviceusage_set.select_related('user').all()
     
 
 class ServiceUsage(models.Model):
