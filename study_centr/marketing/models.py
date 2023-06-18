@@ -13,15 +13,27 @@ class Service(models.Model):
     name = models.CharField(max_length=150)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     is_active = models.BooleanField(default=True)
-    teacher = models.ForeignKey(Teacher, on_delete=models.DO_NOTHING)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self) -> str:
         return self.name + '|' + str(self.price)+'UZS'
     
+    def get_all_usages(self):
+        return self.serviceusage_set.select_related('user', 'service').all()
+    
+    def get_daily_usages(self):
+        pass
+    
+    def get_weekly_usages(self):
+        pass
+    
+    def get_monthly_usages(self):
+        pass
+    
     def get_total_income(self):
-        return self.price * self.serviceuser.set_all().count()
+        return self.price * self.get_all_usages().count()
 
 
 class SocialMedia(models.Model):
@@ -38,19 +50,19 @@ class SocialMedia(models.Model):
         return self.name
     
     def get_all_interestors(self):
-        return self.interestor_set.all().select_related('found_us')
+        return self.interestor_set.all().prefetch_related('found_us')
 
     def get_this_month_interestors(self):
         current_month = timezone.now().month
-        return self.interestor_set.filter(created_at__month=current_month).select_related('found_us')
+        return self.interestor_set.filter(created_at__month=current_month).prefetch_related('found_us')
 
     def get_this_week_interestors(self):
         current_week = timezone.now().isocalendar()[1]
-        return self.interestor_set.filter(created_at__week=current_week).select_related('found_us')
+        return self.interestor_set.filter(created_at__week=current_week).prefetch_related('found_us')
 
     def get_daily_interestors(self):
         today = timezone.now().date()
-        return self.interestor_set.filter(created_at__date=today).select_related('found_us')
+        return self.interestor_set.filter(created_at__date=today).prefetch_related('found_us')
     
 
 class Interestor(models.Model):
@@ -60,7 +72,7 @@ class Interestor(models.Model):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     phone = models.CharField(max_length=20)
-    found_us = models.ForeignKey(SocialMedia, on_delete=models.DO_NOTHING, null=True, default=None)
+    found_us = models.ForeignKey(SocialMedia, on_delete=models.CASCADE, null=True, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self) -> str:
@@ -87,13 +99,14 @@ class ServiceUser(models.Model):
     def get_all_usages(self):
         return self.serviceusage_set.select_related('user', 'service').all()
     
+    
 
 class ServiceUsage(models.Model):
     class Meta:
         verbose_name_plural = 'Service Usages'
         ordering = ['-created_at']
-    service = models.ForeignKey(Service, on_delete=models.DO_NOTHING)
-    user = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     is_done = models.BooleanField(default=False)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
