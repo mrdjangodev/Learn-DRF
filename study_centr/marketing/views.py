@@ -8,6 +8,7 @@ from .serializers import (
     ServiceUserSerializer, ServiceUserDetailSerializer,
     ServiceUsageSerializer, ServiseUsageDetailSerializer,
     SocialMediaSerializer, SocialMediaDetailSerializer,
+    InterestorsSerialer, InterestorDetailSerializer,
     )
 # Create your views here.
 
@@ -50,3 +51,12 @@ class SocialMediaDetailView(RetrieveUpdateDestroyAPIView):
     queryset = SocialMedia.objects.all()
     serializer_class = SocialMediaDetailSerializer
     
+    
+class InterestorsView(ListCreateAPIView):
+    queryset = Interestor.objects.prefetch_related('found_us')
+    serializer_class = InterestorsSerialer
+
+
+class InterestorDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Interestor.objects.prefetch_related('found_us')
+    serializer_class = InterestorDetailSerializer
