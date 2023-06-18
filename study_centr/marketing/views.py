@@ -35,7 +35,7 @@ class ServiceUsageView(ListCreateAPIView):
     serializer_class = ServiceUsageSerializer
     
 
-class ServiceUsageDetail(RetrieveUpdateDestroyAPIView):
+class ServiceUsageDetailView(RetrieveUpdateDestroyAPIView):
     queryset = ServiceUsage.objects.select_related('service', 'user')
     serializer_class = ServiseUsageDetailSerializer
     
