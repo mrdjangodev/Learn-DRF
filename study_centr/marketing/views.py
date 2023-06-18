@@ -6,6 +6,7 @@ from .models import (
 from .serializers import (
     ServicesSerializer, ServiceDetailSerializer,
     ServiceUserSerializer, ServiceUserDetailSerializer,
+    ServiceUsageSerializer, ServiseUsageDetailSerializer,
     )
 # Create your views here.
 
@@ -27,4 +28,14 @@ class ServiceUserView(ListCreateAPIView):
 class ServiceUserDetailView(RetrieveUpdateDestroyAPIView):
     queryset = ServiceUser.objects.all()
     serializer_class = ServiceUserDetailSerializer
+    
+
+class ServiceUsageView(ListCreateAPIView):
+    queryset = ServiceUsage.objects.prefetch_related('service', 'user')
+    serializer_class = ServiceUsageSerializer
+    
+
+class ServiceUsageDetail(RetrieveUpdateDestroyAPIView):
+    queryset = ServiceUsage.objects.select_related('service', 'user')
+    serializer_class = ServiseUsageDetailSerializer
     
