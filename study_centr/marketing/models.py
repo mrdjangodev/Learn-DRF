@@ -1,10 +1,11 @@
 from django.db import models
+from time import timezone
+from datetime import timedelta
 
 
 from main.models import CustomUser
 from employee.models import Teacher
 # Create your models here.
-from time import timezone
 
 class Service(models.Model):
     class Meta:
@@ -20,20 +21,28 @@ class Service(models.Model):
     def __str__(self) -> str:
         return self.name + '|' + str(self.price)+'UZS'
     
+    def get_all_users(self):
+        return self.service_user_set.prefetch_related('serviceusage_set').all()
+    
     def get_all_usages(self):
-        return self.serviceusage_set.select_related('user', 'service').all()
+        return self.serviceusage_set.prefetch_related('user', 'service')
     
     def get_daily_usages(self):
-        pass
-    
+        today = timezone.now().date()
+        return self.serviceusage_set.filter(created_at__date=today).select_related('user', 'service')
+
     def get_weekly_usages(self):
-        pass
-    
+        today = timezone.now().date()
+        start_of_week = today - timedelta(days=today.weekday())
+        end_of_week = start_of_week + timedelta(days=6)
+        return self.serviceusage_set.filter(created_at__range=(start_of_week, end_of_week)).select_related('user', 'service')
+
     def get_monthly_usages(self):
-        pass
+        current_month = timezone.now().month
+        return self.serviceusage_set.filter(created_at__month=current_month).select_related('user', 'service')
     
     def get_total_income(self):
-        return self.price * self.get_all_usages().count()
+        return self.serviceusage_set.filter(is_done=True).aggregate(total_income=models.Sum('service__price'))['total_income'] or 0
 
 
 class SocialMedia(models.Model):
@@ -58,11 +67,11 @@ class SocialMedia(models.Model):
 
     def get_this_week_interestors(self):
         current_week = timezone.now().isocalendar()[1]
-        return self.interestor_set.filter(created_at__week=current_week).prefetch_related('found_us')
+        return self.interestor_set.filter(created_at__week=current_week).select_related('found_us')
 
     def get_daily_interestors(self):
         today = timezone.now().date()
-        return self.interestor_set.filter(created_at__date=today).prefetch_related('found_us')
+        return self.interestor_set.filter(created_at__date=today).select_related('found_us')
     
 
 class Interestor(models.Model):
@@ -98,7 +107,6 @@ class ServiceUser(models.Model):
     
     def get_all_usages(self):
         return self.serviceusage_set.select_related('user', 'service').all()
-    
     
 
 class ServiceUsage(models.Model):
