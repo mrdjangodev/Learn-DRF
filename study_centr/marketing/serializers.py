@@ -130,3 +130,78 @@ class ServiseUsageDetailSerializer(serializers.ModelSerializer):
         fields = (
             'id', 'user_data', 'is_done', 'description', 'created_at'
         )
+        
+    
+class SocialMediaSerializer(serializers.ModelSerializer):
+    total_interestors = serializers.SerializerMethodField('get_number_of_interestors')
+    total_monthly_interestors = serializers.SerializerMethodField('get_number_of_monthly_interestors')
+    total_weekly_interestors = serializers.SerializerMethodField('get_number_of_weekly_interestors')
+    total_daily_interestors = serializers.SerializerMethodField('get_number_of_daily_interestors')
+    
+    class Meta:
+        model = SocialMedia
+        fields = (
+            'id', 'name', 'followers', 'effect', 'created_at', 
+            'total_interestors', 'total_monthly_interestors', 
+            'total_weekly_interestors', 'total_daily_interestors',
+            )
+    
+    def get_number_of_interestors(self, obj):
+        return obj.get_all_interestors().count()
+    
+    def get_number_of_monthly_interestors(self, obj):
+        return obj.get_this_month_interestors().count()
+    
+    def get_number_of_weekly_interestors(self, obj):
+        return obj.get_this_week_interestors().count()
+    
+    def get_number_of_daily_interestors(self, obj):
+        return obj.get_daily_interestors().count()        
+    
+        
+class SocialMediaDetailSerializer(serializers.ModelSerializer):
+    total_interestors = serializers.SerializerMethodField('get_number_of_interestors')
+    total_monthly_interestors = serializers.SerializerMethodField('get_number_of_monthly_interestors')
+    total_weekly_interestors = serializers.SerializerMethodField('get_number_of_weekly_interestors')
+    total_daily_interestors = serializers.SerializerMethodField('get_number_of_daily_interestors')
+    
+    all_interestors = serializers.SerializerMethodField('get_all_interestors')
+    monthly_interestors = serializers.SerializerMethodField('get_montly_interestors')
+    weekly_interestors = serializers.SerializerMethodField("get_weekly_interestors")
+    daily_interestors = serializers.SerializerMethodField("get_daily_interestors")
+    
+    class Meta:
+        model = SocialMedia
+        fields = (
+            'id', 'name', 'followers', 'effect', 'created_at', 
+            'total_interestors', 'total_monthly_interestors', 
+            'total_weekly_interestors', 'total_daily_interestors',
+            'all_interestors', 'monthly_interestors',
+            'weekly_interestors', 'daily_interestors',
+        )
+    # Number of interestors are taking for data analyzing data and showing charts
+    def get_number_of_interestors(self, obj):
+        return obj.get_all_interestors().count()
+    
+    def get_number_of_monthly_interestors(self, obj):
+        return obj.get_this_month_interestors().count()
+    
+    def get_number_of_weekly_interestors(self, obj):
+        return obj.get_this_week_interestors().count()
+    
+    def get_number_of_daily_interestors(self, obj):
+        return obj.get_daily_interestors().count()
+    
+    def get_all_interestors(self, obj):
+        return obj.get_all_interestors()
+    
+    def get_montly_interestors(self, obj):
+        return obj.get_this_month_interestors()
+    
+    def get_weekly_interestors(self, obj):
+        return obj.get_this_week_interestors()
+    
+    def get_daily_interestors(self, obj):
+        return obj.get_daily_interestors()
+    
+    
