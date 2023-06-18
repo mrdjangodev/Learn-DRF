@@ -85,7 +85,7 @@ class ServiceUser(models.Model):
         return self.full_name
     
     def get_all_usages(self):
-        return self.serviceusage_set.select_related('user').all()
+        return self.serviceusage_set.select_related('user', 'service').all()
     
 
 class ServiceUsage(models.Model):
