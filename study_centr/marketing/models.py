@@ -134,7 +134,6 @@ class ServiceUsage(models.Model):
         return f"{self.user} | {self.service}"
     
 
-
 # signals here
 from django.dispatch import receiver
 from django.db.models.signals import post_save

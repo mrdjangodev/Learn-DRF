@@ -117,3 +117,16 @@ class ServiceUserDetailSerializer(serializers.ModelSerializer):
         return obj.get_all_usages()
     
 
+class ServiceUsageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ServiceUsage
+        fields = '__all__'
+        
+
+class ServiseUsageDetailSerializer(serializers.ModelSerializer):
+    user_data = ServiceUserSerializer(source='user')
+    class Meta:
+        model = ServiceUsage
+        fields = (
+            'id', 'user_data', 'is_done', 'description', 'created_at'
+        )
