@@ -5,6 +5,7 @@ from .models import (
 )
 from .serializers import (
     ServicesSerializer, ServiceDetailSerializer,
+    ServiceUserSerializer, ServiceUserDetailSerializer,
     )
 # Create your views here.
 
@@ -15,5 +16,15 @@ class ServiceView(ListCreateAPIView):
 
 class ServiceDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Service.objects.select_related('teacher')
+    serializer_class = ServiceDetailSerializer
+    
+    
+class ServiceUserView(ListCreateAPIView):
+    queryset = ServiceUser.objects.prefetch_related('get_all_usages_set')
+    serializer_class = ServiceUserSerializer
+    
+
+class ServiceUserDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = ServiceUser.objects.prefetch_related('get_all_usages_set')
     serializer_class = ServiceDetailSerializer
     
