@@ -63,7 +63,7 @@ class SocialMedia(models.Model):
     name = models.CharField(max_length=30)
     description = models.TextField()
     followers = models.PositiveBigIntegerField(default=0)
-    effec = models.DecimalField(max_digits=3, decimal_places=2, default=0.0) #that is precentage of visitors by this social media to centr
+    effect = models.DecimalField(max_digits=3, decimal_places=2, default=0.0) #that is precentage of visitors by this social media to centr
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self) -> str:

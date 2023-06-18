@@ -141,7 +141,7 @@ class SocialMediaSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialMedia
         fields = (
-            'id', 'name', 'followers', 'effect', 'created_at', 
+            'id', 'name', 'followers', 'effect', 'description', 'created_at', 
             'total_interestors', 'total_monthly_interestors', 
             'total_weekly_interestors', 'total_daily_interestors',
             )
@@ -173,7 +173,7 @@ class SocialMediaDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = SocialMedia
         fields = (
-            'id', 'name', 'followers', 'effect', 'created_at', 
+            'id', 'name', 'followers', 'effect', 'description', 'created_at', 
             'total_interestors', 'total_monthly_interestors', 
             'total_weekly_interestors', 'total_daily_interestors',
             'all_interestors', 'monthly_interestors',
