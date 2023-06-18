@@ -127,6 +127,7 @@ class ServiceUsage(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     user = models.ForeignKey(ServiceUser, on_delete=models.CASCADE)
     is_done = models.BooleanField(default=False)
+    payment_done = models.BooleanField(default=False)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
@@ -134,6 +135,20 @@ class ServiceUsage(models.Model):
         return f"{self.user} | {self.service}"
     
 
+class ServicePayment(models.Model):
+    class Meta:
+        verbose_name_plural = 'Service Payments'
+        ordering = ['-created_at']
+    service_user = models.ForeignKey(ServiceUser, on_delete=models.CASCADE)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    service_usage = models.ForeignKey(ServiceUsage, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=15, decimal_places=2, default=0.0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self) -> str:
+        return self.service_usage 
+    
+    
 # signals here
 from django.dispatch import receiver
 from django.db.models.signals import post_save
