@@ -1,6 +1,6 @@
 from django.db import models
-from time import timezone
-from datetime import timedelta
+# from time import datetime
+from datetime import timedelta, datetime
 
 
 from main.models import CustomUser
@@ -11,7 +11,7 @@ class Service(models.Model):
     class Meta:
         verbose_name_plural = 'Services'
         ordering = ['-created_at']
-    name = models.CharField(max_length=150)
+    name = models.CharField(max_length=150, unique=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     is_active = models.BooleanField(default=True)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
@@ -20,9 +20,6 @@ class Service(models.Model):
     
     def __str__(self) -> str:
         return self.name + '|' + str(self.price)+'UZS'
-    
-    def get_all_users(self):
-        return self.service_user_set.prefetch_related('serviceusage_set').all()
     
     def get_all_usages(self):
         return self.serviceusage_set.prefetch_related('user', 'service')
@@ -42,17 +39,17 @@ class Service(models.Model):
         return self.serviceusage_set.filter(is_done=True).prefetch_related('user', 'service')
     
     def get_daily_usages(self):
-        today = timezone.now().date()
+        today = datetime.now().date()
         return self.serviceusage_set.filter(created_at__date=today).select_related('user', 'service')
 
     def get_weekly_usages(self):
-        today = timezone.now().date()
+        today = datetime.now().date()
         start_of_week = today - timedelta(days=today.weekday())
         end_of_week = start_of_week + timedelta(days=6)
         return self.serviceusage_set.filter(created_at__range=(start_of_week, end_of_week)).select_related('user', 'service')
 
     def get_monthly_usages(self):
-        current_month = timezone.now().month
+        current_month = datetime.now().month
         return self.serviceusage_set.filter(created_at__month=current_month).select_related('user', 'service')
     
     def get_total_income(self):
@@ -76,15 +73,15 @@ class SocialMedia(models.Model):
         return self.interestor_set.all().prefetch_related('found_us')
 
     def get_this_month_interestors(self):
-        current_month = timezone.now().month
+        current_month = datetime.now().month
         return self.interestor_set.filter(created_at__month=current_month).prefetch_related('found_us')
 
     def get_this_week_interestors(self):
-        current_week = timezone.now().isocalendar()[1]
+        current_week = datetime.now().isocalendar()[1]
         return self.interestor_set.filter(created_at__week=current_week).select_related('found_us')
 
     def get_daily_interestors(self):
-        today = timezone.now().date()
+        today = datetime.now().date()
         return self.interestor_set.filter(created_at__date=today).select_related('found_us')
     
 

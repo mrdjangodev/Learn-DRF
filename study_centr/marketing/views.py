@@ -8,12 +8,12 @@ from .serializers import (
     )
 # Create your views here.
 
-class ServiceSerializer(ListCreateAPIView):
-    model = Service.objects.select_related('teacher')
+class ServiceView(ListCreateAPIView):
+    queryset = Service.objects.select_related('teacher')
     serializer_class = ServicesSerializer
     
 
-class ServiceDetailSerializer(RetrieveUpdateDestroyAPIView):
-    model = Service.select_related('teacher')
+class ServiceDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Service.objects.select_related('teacher')
     serializer_class = ServiceDetailSerializer
     
