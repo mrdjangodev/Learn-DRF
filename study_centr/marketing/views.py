@@ -7,6 +7,7 @@ from .serializers import (
     ServicesSerializer, ServiceDetailSerializer,
     ServiceUserSerializer, ServiceUserDetailSerializer,
     ServiceUsageSerializer, ServiseUsageDetailSerializer,
+    SocialMediaSerializer, SocialMediaDetailSerializer,
     )
 # Create your views here.
 
@@ -38,4 +39,14 @@ class ServiceUsageView(ListCreateAPIView):
 class ServiceUsageDetailView(RetrieveUpdateDestroyAPIView):
     queryset = ServiceUsage.objects.select_related('service', 'user')
     serializer_class = ServiseUsageDetailSerializer
+    
+    
+class SocialMediaView(ListCreateAPIView):
+    queryset = SocialMedia.objects.all()
+    serializer_class = SocialMediaSerializer
+    
+
+class SocialMediaDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = SocialMedia.objects.all()
+    serializer_class = SocialMediaDetailSerializer
     
