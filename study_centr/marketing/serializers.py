@@ -90,3 +90,30 @@ class ServiceDetailSerializer(serializers.ModelSerializer):
     
     def get_monthly_usages(self, obj):
         return obj.get_monthly_usages()
+    
+  
+class ServiceUserSerializer(serializers.ModelSerializer):
+    total_usages = serializers.SerializerMethodField('get_number_of_usages', read_only=True)
+    class Meta:
+        model = ServiceUser
+        fields = ('id', 'full_name', 'phone', 'image', 'status', 'total_usages')
+    
+    def get_number_of_usages(self, obj):
+        return obj.get_all_usages().count()
+    
+    
+class ServiceUserDetailSerializer(serializers.ModelSerializer):
+    total_usages = serializers.SerializerMethodField('get_number_of_usages', read_only=True)
+    usages = serializers.SerializerMethodField("get_all_usages", read_only=True)
+    
+    class Meta:
+        model = ServiceUser
+        fields = ('id', 'full_name', 'phone', 'image', 'status', 'total_usages', 'usages')
+    
+    def get_number_of_usages(self, obj):
+        return obj.get_all_usages().count()
+    
+    def get_all_usages(self, obj):
+        return obj.get_all_usages()
+    
+
