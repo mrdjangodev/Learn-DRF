@@ -205,3 +205,31 @@ class SocialMediaDetailSerializer(serializers.ModelSerializer):
         return obj.get_daily_interestors()
     
     
+class InterestorsSerialer(serializers.ModelSerializer):     
+    class Meta:
+        model = Interestor
+        fields = '__all__'
+
+
+class InterestorDetailSerializer(serializers.ModelSerializer):
+    found_us_where = serializers.SerializerMethodField('get_basic_data', read_only=True)
+    class Meta:
+        model = Interestor
+        fields = ('id', 'first_name', 'last_name', 'phone', 'found_us_where', 'created_at')
+    
+    def get_basic_data(self, obj):
+        """
+        This function designed to get basic data 
+        from Social Media which is Interestor Found_Us from
+
+        Args:
+            obj (_object_): This argument is Interestor's instance object
+            context (_dictionary_): This argument collects all required data
+        """
+        context = {
+            'id': obj.found_us.id,
+            'name': obj.found_us.name,
+            'followers': obj.found_us.followers,
+            'created_at': obj.found_us.created_at
+        }
+        return context
