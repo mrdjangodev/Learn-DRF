@@ -138,15 +138,17 @@ class ServiceUsage(models.Model):
     
 #ServicePayment section start 
 def validate_service_payment(value):
-    if value.service_user != value.service_usage.user:
+    if value.service_usage.payment_done == True:
+        raise ValidationError(f"Service Usage's Payment is already done")
+    
+    elif value.service_user != value.service_usage.user:
         raise ValidationError(f"service_user should be the same with ({value.service_usage.user})")
     
-    if value.service != value.service_usage.service:
+    elif value.service != value.service_usage.service:
         raise ValidationError(f"service should be the same with ({value.service_usage.service})")
     
-    if value.service.price > value.amount:
+    elif value.service.price > value.amount:
         raise ValidationError(f'Amount should be Greater than or equal to ({value.service.price})')
-    
     
     
 class ServicePayment(models.Model):
@@ -171,10 +173,25 @@ class ServicePayment(models.Model):
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
-@receiver(post_save, sender=ServiceUsage)
-def update_service_user_status(sender, instance, created, **kwargs):
+# @receiver(post_save, sender=ServiceUsage)
+# def update_service_user_status(sender, instance, created, **kwargs):
+#     if created:
+#         user = instance.user
+#         usage_count = user.get_all_usages().filter(payment_done=True).count()
+#         if usage_count >= 1:
+#             user.status = 'normal'
+#         elif usage_count > 5:
+#             user.status = 'loyal'
+#         user.save()
+        
+@receiver(post_save, sender=ServicePayment)
+def update_service_usage_payment_done(sender, instance, created, **kwargs):
     if created:
-        user = instance.user
+        user = instance.service_user
+        usage = instance.service_usage
+        if usage.payment_done == False:
+            usage.payment_noe = True
+            usage.save()
         usage_count = user.get_all_usages().filter(payment_done=True).count()
         if usage_count >= 1:
             user.status = 'normal'
