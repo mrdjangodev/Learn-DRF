@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import marketing.validators
+# import marketing.validators
 
 
 class Migration(migrations.Migration):
@@ -15,16 +15,16 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='servicepayment',
             name='amount',
-            field=models.DecimalField(decimal_places=2, default=0.0, max_digits=15, validators=[marketing.validators.validate_service_payment_amount]),
+            field=models.DecimalField(decimal_places=2, default=0.0, max_digits=15),
         ),
         migrations.AlterField(
             model_name='servicepayment',
             name='service',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='marketing.service', validators=[marketing.validators.validate_services]),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='marketing.service'),
         ),
         migrations.AlterField(
             model_name='servicepayment',
             name='service_user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='marketing.serviceuser', validators=[marketing.validators.validate_service_payment_user]),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='marketing.serviceuser'),
         ),
     ]
