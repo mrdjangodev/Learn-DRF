@@ -34,8 +34,8 @@ class StudentPayment(models.Model):
     class Meta:
         verbose_name_plural = "Students Payments"  
         ordering = ['-created_at']
-    adminstrator = models.ForeignKey(Adminstrator, on_delete=models.DO_NOTHING)
-    student = models.ForeignKey(Student, on_delete=models.DO_NOTHING)
+    adminstrator = models.ForeignKey(Adminstrator, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     
