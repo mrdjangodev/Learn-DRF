@@ -30,23 +30,23 @@ class BossDetailSerializer(serializers.ModelSerializer):
         fields = ('id', 'user_data', 'is_active', 'salary', 'created_at')
     
     
-class AdminstratorsSerializer(serializers.ModelSerializer):
-    user_data = UserSerializer(source='user')
-    class Meta:
-        model = Adminstrator
-        fields = ('id', 'user_data', 'is_active', 'salary', 'created_at')
+# class AdminstratorsSerializer(serializers.ModelSerializer):
+#     user_data = UserSerializer(source='user')
+#     class Meta:
+#         model = Adminstrator
+#         fields = ('id', 'user_data', 'is_active', 'salary', 'created_at')
     
-    def create(self, validated_data):
-        user_data = validated_data.pop('user')
-        user = CustomUser.objects.create(**user_data)
-        adminstrator = Adminstrator.objects.create(user=user, **validated_data)
-        return adminstrator   
+#     def create(self, validated_data):
+#         user_data = validated_data.pop('user')
+#         user = CustomUser.objects.create(**user_data)
+#         adminstrator = Adminstrator.objects.create(user=user, **validated_data)
+#         return adminstrator   
 
-class AdminstratorDetailSerializer(serializers.ModelSerializer):
-    user_data = UserSerializer(source='user', read_only=True)
-    class Meta:
-        model = Adminstrator
-        fields = ('id', 'user_data', 'is_active', 'salary', 'created_at')
+# class AdminstratorDetailSerializer(serializers.ModelSerializer):
+#     user_data = UserSerializer(source='user', read_only=True)
+#     class Meta:
+#         model = Adminstrator
+#         fields = ('id', 'user_data', 'is_active', 'salary', 'created_at')
 
 
 class AccountantsSerializer(serializers.ModelSerializer):
@@ -65,7 +65,7 @@ class AccountantDetailSerializer(serializers.ModelSerializer):
     user_data = UserSerializer(source='user', read_only=True)
     class Meta:
         model = Accountant
-        fields = ('id', 'user', 'is_active', 'salary', 'created_at')
+        fields = ('id', 'user_data', 'is_active', 'salary', 'created_at')
     
 
 

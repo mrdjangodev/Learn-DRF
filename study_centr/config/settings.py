@@ -40,6 +40,13 @@ INSTALLED_APPS = [
     
     # global
     'rest_framework',
+    # 'rest_framework.authtoken',
+    # 'dj_rest_auth',
+    # 'dj_rest_auth.registration',
+    # 'allauth',
+    # 'allauth.account',
+    'drf_yasg',
+    'corsheaders',
     
     # local
     'main',

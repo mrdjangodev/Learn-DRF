@@ -4,8 +4,8 @@ from django.shortcuts import get_object_or_404
 from .models import Teacher, Accountant, Adminstrator, Boss
 from .serializers import (TeachersSerializer, TeacherDetailSerializer, 
                           AccountantsSerializer, AccountantDetailSerializer,
-                          AdminstratorsSerializer, AdminstratorDetailSerializer, 
                           BossesSerializer, BossDetailSerializer,)
+from .admin_serializers import AdminstratorsSerializer, AdminstratorDetailSerializer
 from .forms import TeacherForm
 from main.models import CustomUser
 # Create your views here.
