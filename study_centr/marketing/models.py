@@ -175,7 +175,7 @@ from django.db.models.signals import post_save
 def update_service_user_status(sender, instance, created, **kwargs):
     if created:
         user = instance.user
-        usage_count = user.get_all_usages().filter(is_done=True).count()
+        usage_count = user.get_all_usages().filter(payment_done=True).count()
         if usage_count >= 1:
             user.status = 'normal'
         elif usage_count > 5:
