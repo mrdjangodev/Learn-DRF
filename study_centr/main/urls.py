@@ -1,9 +1,14 @@
 from django.urls import path
 
 from .views import (UserViewSet, UserDetailViewSet, RoomViewSet, 
-                    RoomDetailViewSet, SubjectViewSet, SubjectDetailViewSet)
+                    RoomDetailViewSet, SubjectViewSet, SubjectDetailViewSet,
+                    SignUpView, LoginView,
+                    )
 
 urlpatterns = [
+    path("login/", LoginView.as_view(), name="login"),
+    path('sign_up/', SignUpView.as_view(), name="sign_up"),
+    
     path('users/', UserViewSet.as_view(), name='users'),
     path('users/<int:pk>/', UserDetailViewSet.as_view(), name='user_detail'),
     
