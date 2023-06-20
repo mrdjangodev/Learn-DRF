@@ -1,8 +1,11 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
+from django.db.models import Q
+
 from employee.models import (
     Adminstrator, Boss, Teacher, Accountant
     )
-from django.db.models import Q
+from students.models import Student
+from marketing.models import ServiceUser
 
 
 class AdminstratorPermissions(BasePermission):
@@ -44,7 +47,27 @@ class AccountantPermissions(BasePermission):
     """Accountant can Add/see (Student Payment, Extra payments, Emplee's payments, ServiceUsagePayments)
         """
     def has_permission(self, request, view):
-        boss_exists = Boss.objects.filter(Q(user=request.user) & Q(is_active=True)).exists()
-        if boss_exists and request.method in SAFE_METHODS:
+        accountant_exists = Accountant.objects.filter(Q(user=request.user) & Q(is_active=True)).exists()
+        if accountant_exists and request.method in SAFE_METHODS:
+            return True
+        return False
+    
+
+class StudentPermissions(BasePermission):
+    """Student can see/edit profile data, 
+        Can see all (schedules, groups, payments)"""
+    def has_permission(self, request, view):
+        student_exists = Student.objects.filter(Q(user=request.user) & Q(is_active=True)).exists()
+        if student_exists and request.method in SAFE_METHODS:
+            return True
+        return False
+
+
+class ServiceUserPermissions(BasePermission):
+    """Can see All (Services, ServicePayments)
+    """
+    def has_permission(self, request, view):
+        service_user_exists = ServiceUser.objects.filter(Q(user=request.user)).exists()
+        if service_user_exists and request.method in SAFE_METHODS:
             return True
         return False
