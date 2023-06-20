@@ -23,12 +23,12 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Library Project",
+        title="CRM for Study Centr",
         description="Created for learning drf",
         default_version='v1',
         terms_of_service='https://www.google.com/policies/terms/',
         contact=openapi.Contact(email='mirolimcoder@gmail.com'),
-        license=openapi.License(name="License for Library Project"),
+        license=openapi.License(name="License for CRM Project"),
     ),
     public=True,
     permission_classes=(permissions.AllowAny,)
