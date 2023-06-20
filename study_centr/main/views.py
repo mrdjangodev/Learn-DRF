@@ -3,10 +3,11 @@ from rest_framework import viewsets, generics, status
 from rest_framework.response import Response
 from rest_framework.request import Request
 from rest_framework.views import APIView
+from dj_rest_auth.serializers import LoginSerializer
 
 
 from .models import CustomUser, Subject, Room
-from .user_serializers import UserDetailSerializer, UserSerializer, SignUpSerializer, LoginSerializer
+from .user_serializers import UserDetailSerializer, UserSerializer, SignUpSerializer
 from .serializers import (
     RoomSerializer, RoomDetailSerializer, 
     SubjectSerializer, SubjectDetailSerializer)

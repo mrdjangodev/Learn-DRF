@@ -28,10 +28,10 @@ class SignUpSerializer(serializers.ModelSerializer):
         return user
 
 
-class LoginSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CustomUser
-        fields = ('email', 'password')
+# class LoginSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = CustomUser
+#         fields = ('email', 'password')
 
 
 class UserSerializer(serializers.ModelSerializer):
