@@ -1,5 +1,7 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
-from employee.models import Adminstrator, Boss
+from employee.models import (
+    Adminstrator, Boss, Teacher, Accountant
+    )
 from django.db.models import Q
 
 
@@ -13,7 +15,9 @@ class AdminstratorPermissions(BasePermission):
         # give access for only reading
         if request.method in SAFE_METHODS and admin_exists:
             return True
- 
+        else:
+            return False
+
 
 class BossPermissions(BasePermission):
     """Boss Can add/update/delete/see (Teacher, Accountant, Adminstrator)
@@ -22,5 +26,25 @@ class BossPermissions(BasePermission):
         boss_exists = Boss.objects.filter(Q(user=request.user) & Q(is_active=True)).exists()
         if boss_exists and request.method in SAFE_METHODS:
             return True
-    
+        else:
+            return False
 
+
+class TeacherPermissions(BasePermission):
+    """Teacher can update/see (Profile detail)
+        Can add/see Student Attendance"""
+    def has_object_permission(self, request, view, obj):
+        teacher_exists = Teacher.objects.filter(Q(user=request.user) & Q(is_active=True)).exists()
+        if teacher_exists and request.method in SAFE_METHODS:
+            return True
+        return False
+
+
+class AccountantPermissions(BasePermission):
+    """Accountant can Add/see (Student Payment, Extra payments, Emplee's payments, ServiceUsagePayments)
+        """
+    def has_permission(self, request, view):
+        boss_exists = Boss.objects.filter(Q(user=request.user) & Q(is_active=True)).exists()
+        if boss_exists and request.method in SAFE_METHODS:
+            return True
+        return False
