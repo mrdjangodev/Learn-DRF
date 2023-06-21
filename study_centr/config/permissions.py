@@ -71,3 +71,5 @@ class ServiceUserPermissions(BasePermission):
         if service_user_exists and request.method in SAFE_METHODS:
             return True
         return False
+    
+

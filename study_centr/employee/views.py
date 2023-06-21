@@ -1,5 +1,9 @@
-from rest_framework.generics import (ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView)
+from rest_framework.generics import (ListAPIView, ListCreateAPIView, 
+                                     RetrieveUpdateDestroyAPIView, RetrieveAPIView,
+                                     RetrieveUpdateAPIView)
 from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
+
 
 from .models import Teacher, Accountant, Adminstrator, Boss
 from .serializers import (TeachersSerializer, TeacherDetailSerializer, 
@@ -8,40 +12,51 @@ from .serializers import (TeachersSerializer, TeacherDetailSerializer,
 from .admin_serializers import AdminstratorsSerializer, AdminstratorDetailSerializer
 from .forms import TeacherForm
 from main.models import CustomUser
+
+from config.permissions import (
+    BossPermissions, TeacherPermissions, 
+    AdminstratorPermissions, AccountantPermissions)
 # Create your views here.
 
 class BossesListView(ListCreateAPIView):
+    permission_classes = [IsAuthenticated, IsAdminUser]
     queryset = Boss.objects.prefetch_related('user')
     serializer_class = BossesSerializer
     
 
 class BossDetailView(RetrieveAPIView): 
+    permission_classes = [IsAuthenticated, BossPermissions | IsAdminUser]
     queryset = Boss.objects.select_related('user')
     serializer_class = BossDetailSerializer
     
 
 class AdminstratorsListView(ListCreateAPIView):
+    permission_classes = [IsAuthenticated, BossPermissions | IsAdminUser]
     queryset = Adminstrator.objects.prefetch_related('user').all()
     serializer_class = AdminstratorsSerializer
     
 
 class AdminstratorDetailView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, BossPermissions | IsAdminUser | AdminstratorPermissions]
     queryset = Adminstrator.objects.select_related('user')
     serializer_class = AdminstratorDetailSerializer
     
 
 class AccountantsListView(ListCreateAPIView):
+    permission_classes = [IsAuthenticated, BossPermissions | IsAdminUser]
     queryset = Accountant.objects.prefetch_related('user')
     serializer_class = AccountantsSerializer
     
 
 class AccountantDetailView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated, BossPermissions | IsAdminUser | AccountantPermissions]
     queryset = Accountant.objects.select_related('user')
     #I chose select related in this view cuz I take only one related object in this view
     serializer_class = AccountantDetailSerializer
     
     
 class TeacherListView(ListCreateAPIView):
+    permission_classes = [IsAuthenticatedOrReadOnly, AdminstratorPermissions | BossPermissions | AdminstratorPermissions]
     # queryset = Teacher.objects.all()
     queryset = Teacher.objects.prefetch_related('user').all() # I choose fastest queryset
     # queryset = Teacher.objects.select_related('user').all()
