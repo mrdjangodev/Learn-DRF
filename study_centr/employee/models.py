@@ -163,11 +163,16 @@ class Teacher(models.Model):
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
-@receiver(post_save, sender=(Boss, Adminstrator, Accountant, Teacher))
+
+@receiver(post_save, sender=Boss)
+@receiver(post_save, sender=Teacher)
+@receiver(post_save, sender=Adminstrator)
 def change_user_staff_status(sender, instance, created, **kwargs):
     """I'm giving acces to users to use Django's Admin dashboard"""
+    print('changing user staff started')
     if created:
         user = instance.user
+        print(f"{user} is created| class : {instance.__class__.__name__}")
         user.is_staff = True
         user.save()
-        
+        print(f"{user}'s staff is changed| user_staff: {user.is_staff}")

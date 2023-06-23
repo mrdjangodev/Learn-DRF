@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -22,7 +22,7 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
-class CustomUser(AbstractBaseUser):
+class CustomUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=255, unique=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
@@ -45,11 +45,17 @@ class CustomUser(AbstractBaseUser):
     def get_short_name(self):
         return self.first_name
 
+    # def has_perm(self, perm, obj=None):
+    #     return True
+
+    # def has_module_perms(self, app_label):
+    #     return True
+
     def has_perm(self, perm, obj=None):
-        return True
+        return super().has_perm(perm, obj)
 
     def has_module_perms(self, app_label):
-        return True
+        return super().has_module_perms(app_label)
 
     def get_user_type(self):
         # add your implementation here
