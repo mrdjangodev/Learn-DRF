@@ -157,3 +157,17 @@ class Teacher(models.Model):
     def get_all_groups(self):
         return self.group_set.select_related('teacher').all()
         # pass
+        
+
+# signals here
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+
+@receiver(post_save, sender=(Boss, Adminstrator, Accountant, Teacher))
+def change_user_staff_status(sender, instance, created, **kwargs):
+    """I'm giving acces to users to use Django's Admin dashboard"""
+    if created:
+        user = instance.user
+        user.is_staff = True
+        user.save()
+        

@@ -190,8 +190,7 @@ def update_service_usage_payment_done(sender, instance, created, **kwargs):
         user = instance.service_user
         usage = instance.service_usage
         if usage.payment_done == False:
-            usage.payment_noe = True
-            usage.save()
+            usage.payment_done = True
         usage_count = user.get_all_usages().filter(payment_done=True).count()
         if usage_count >= 1:
             user.status = 'normal'
