@@ -58,11 +58,7 @@ class Teacher(models.Model):
     class Meta:
         verbose_name_plural = 'Teachers'
         ordering = ['-created_at']
-        # permissions = (
-        #     ('can_view_attandance', "Can view attandance"),
-        #     ('can_add_attandance', 'Can add attandance'),
-        #     ('can_change_attandance', 'Can change attandance'),
-        #     )
+        
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
     salary = models.DecimalField(max_digits=10, decimal_places=2)
@@ -101,24 +97,27 @@ def change_user_staff_status(sender, instance, created, **kwargs):
     """Grant access to Django's admin dashboard for new employees."""
     if created and hasattr(instance, 'user'):
         user = instance.user
+        user.is_staff = True
         model_name = instance.__class__.__name__.lower()
-        print(f"Model name: {model_name}")
+        # print(f"Model name: {model_name}")
         permissions = employees_permissions.get(model_name)
-        print(f"Perms: {permissions}")
+        # print(f"Perms: {permissions}")
+        # print(f"All CustomUser permissions: {Permission.objects.all()}")
         permission_ids = []
         for codename, name in permissions:
             # print(name)
             permission = tuple(set(Permission.objects.filter(name=name)))
-            print(f"Perm: ",permission)
+            # print(f"Perm: ",permission)
             if len(permission) > 1:
                 for pr in permission:
                     permission_ids.append(pr.id)
                 else:
                     permission_ids.append(permission[0].id)
             # permission = Permission.objects.filter(name=name)
-        print(permission_ids)
+        # print(permission_ids)
         
             
         user.user_permissions.add(*permission_ids)
-        user.is_staff = True
         user.save()
+        
+        print(f"User: {user} | is_staff: {user.is_staff}\nPermissions: {user.user_permissions}")
