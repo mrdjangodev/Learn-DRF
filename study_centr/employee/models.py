@@ -1,6 +1,7 @@
 from django.db import models
 
 from main.models import CustomUser, Subject
+from .variables import employees_permissions
 # from study.models import Schedule
 # Create your models here.
 
@@ -9,6 +10,7 @@ class Boss(models.Model):
     class Meta:
         verbose_name_plural = "Bosses"
         ordering = ['-created_at']    
+        permissions = employees_permissions['boss']
         
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
@@ -26,7 +28,8 @@ class Adminstrator(models.Model):
     class Meta:
         verbose_name_plural = 'Admintrators'
         ordering = ['-created_at']
-    
+        permissions = employees_permissions['adminstrator']
+        
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
     salary = models.DecimalField(max_digits=10, decimal_places=2)
@@ -43,6 +46,7 @@ class Accountant(models.Model):
     class Meta:
         verbose_name_plural = 'Accountants'
         ordering = ['-created_at']
+        permissions = employees_permissions['accountant']
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
     salary = models.DecimalField(max_digits=10, decimal_places=2)
@@ -58,6 +62,7 @@ class Teacher(models.Model):
     class Meta:
         verbose_name_plural = 'Teachers'
         ordering = ['-created_at']
+        permissions = employees_permissions['teacher']
         
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
@@ -88,7 +93,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 from django.contrib.auth.models import Permission
 
-from .variables import employees_permissions
+
 
 @receiver(post_save, sender=Boss)
 @receiver(post_save, sender=Teacher)
@@ -108,46 +113,21 @@ def change_user_staff_status(sender, instance, created, **kwargs):
                     permission_ids.append(pr.id)
             elif len(permission) == 1:
                 permission_ids.append(permission[0].id)
+        print("Perm IDs: ", permission_ids)
         auth_permission_ids = Permission.objects.filter(content_type__app_label='auth').values_list('id', flat=True)
-        user.user_permissions.remove(*auth_permission_ids)
         user.user_permissions.add(*permission_ids)
         user.save()
+        user_perms_ids = user.user_permissions.all().values_list('id', flat=True) #user permission after saving
+        conflict_ids = list(set(permission_ids) - set(user_perms_ids))
+        print(f"Conflict ids: {conflict_ids}")
+        user.user_permissions.remove(*auth_permission_ids)
+        if permission_ids != []:
+            user.user_permissions.add(*conflict_ids)
+            user.save()
+        final_user_perms_ids = [perm_id for perm_id in user.user_permissions.all().values_list('id', flat=True)]
         
-        print(permission_ids, '\n', user.user_permissions.all())
-    
-    # if created and hasattr(instance, 'user'):
-    #     user = instance.user
-    #     user.is_staff = True
-    #     model_name = instance.__class__.__name__.lower()
-    #     permissions = employees_permissions.get(model_name)
-    #     permission_ids = []
-    #     perms = []
-    #     # print("filtered Group perms: ", tuple(set(Permission.objects.filter(C'group').exclude(content_type__app_label='auth'))))
-    #     # print("filtered Auth perms: ", tuple(set(Permission.objects.filter(content_type__app_label='auth'))))
-    #     # print(f"All permissions: {Permission.objects.all()}")
-    #     # print(f"{10*'-'}\nAuth permissions: {Permission.objects.filter(name__icontains='auth')}")
-    #     # print(f"{10*'-'}\nGroup permissions: {Permission.objects.filter(name__icontains='group')}\n{10*'-'}")
+        print(f"Difference beetween: before/after conflict\n{list(set(final_user_perms_ids) - set(user_perms_ids))}")
+        # auth_permission_ids = Permission.objects.filter(content_type__app_label='auth').values_list('id', flat=True)
         
-    #     # for permss in Permission.objects.filter(name__icontains='group'):
-    #     #     print(f"{permss.name + ' : ' + permss.codename} \nContent type: {permss.content_type} \nNatural keys: {permss.natural_key()}")
-    #     for codename, name in permissions:
-    #         permission = Permission.objects.filter(name__icontains=name).exclude(content_type__app_label='auth')
-    #         perms.append(permission)
-    #         if len(permission) > 1:
-    #             for pr in permission:
-    #                 permission_ids.append(pr.id)
-    #             else:
-    #                 permission_ids.append(permission[0].id)
-    #     # prms = Permission.objects.filter(content_type__app_label='auth')
-    #     # print("IDS: ", permission_ids)
-    #     # for pr in prms:
-    #     #     print(f"{pr} | id: {pr.id} | is in permssions_ids: {pr.id in permission_ids}")
-    #     #     # permission_ids.remove(pr.id)
-    #     # # print("After changing IDS: ", permission_ids)
-    #     # # print(f"--------------------------\n{perms}")
-        
-            
-    #     user.user_permissions.add(*permission_ids)
-    #     user.save()
-        
-    #     # print(f"User: {user} | is_staff: {user.is_staff}\nPermissions: {user.user_permissions}")
+        # print(f"SocialMediaPermissions: {social_media_perms}\n{10*'*'}\nall_perms_ids: {permission_ids}")
+   

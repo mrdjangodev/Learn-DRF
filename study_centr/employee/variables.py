@@ -81,3 +81,6 @@ employees_permissions = {
     'teacher': (),
     'accountant': (),
 }
+
+# from django.contrib.auth.models import Permission
+# print(Permission.objects.filter(name__icontains="servicepayment"))
