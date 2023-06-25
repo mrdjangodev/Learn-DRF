@@ -10,7 +10,7 @@ class Boss(models.Model):
         verbose_name_plural = "Bosses"
         ordering = ['-created_at']    
         
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
     salary = models.DecimalField(max_digits=15, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -27,7 +27,7 @@ class Adminstrator(models.Model):
         verbose_name_plural = 'Admintrators'
         ordering = ['-created_at']
     
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
     salary = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -43,7 +43,7 @@ class Accountant(models.Model):
     class Meta:
         verbose_name_plural = 'Accountants'
         ordering = ['-created_at']
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
     salary = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -59,7 +59,7 @@ class Teacher(models.Model):
         verbose_name_plural = 'Teachers'
         ordering = ['-created_at']
         
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     is_active = models.BooleanField(default=True)
     salary = models.DecimalField(max_digits=10, decimal_places=2)
     subjects = models.ManyToManyField(Subject)

@@ -4,7 +4,6 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 # Register your models here.
-# class USerAdmin(admin.ModelAdmin):
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = (
