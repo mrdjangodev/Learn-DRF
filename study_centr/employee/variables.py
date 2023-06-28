@@ -52,9 +52,9 @@ employees_permissions = {
         ('can_add_group', 'Can add group'),
         ('can_change_group', 'Can change group'),
         
-        ('can_view_socialmedia', "Can view socialmedia"),
-        ('can_add_socialmedia', 'Can add socialmedia'),
-        ('can_change_socialmedia', 'Can change socialmedia'),
+        ('can_view_socialmedia', "Can view social media"),
+        ('can_add_socialmedia', 'Can add social media'),
+        ('can_change_socialmedia', 'Can change social media'),
         
         ('can_view_service', "Can view service"),
         ('can_add_service', 'Can add service'),

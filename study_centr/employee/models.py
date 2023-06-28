@@ -113,20 +113,24 @@ def change_user_staff_status(sender, instance, created, **kwargs):
                     permission_ids.append(pr.id)
             elif len(permission) == 1:
                 permission_ids.append(permission[0].id)
-        print("Perm IDs: ", permission_ids)
+        # print("Perm IDs: ", permission_ids)
         auth_permission_ids = Permission.objects.filter(content_type__app_label='auth').values_list('id', flat=True)
         user.user_permissions.add(*permission_ids)
         user.save()
         user_perms_ids = user.user_permissions.all().values_list('id', flat=True) #user permission after saving
         conflict_ids = list(set(permission_ids) - set(user_perms_ids))
-        print(f"Conflict ids: {conflict_ids}")
+        # print(f"Conflict ids: {conflict_ids}")
         user.user_permissions.remove(*auth_permission_ids)
         if permission_ids != []:
             user.user_permissions.add(*conflict_ids)
             user.save()
         final_user_perms_ids = [perm_id for perm_id in user.user_permissions.all().values_list('id', flat=True)]
         
-        print(f"Difference beetween: before/after conflict\n{list(set(final_user_perms_ids) - set(user_perms_ids))}")
+        # print(f"Difference beetween: before/after conflict\n{list(set(final_user_perms_ids) - set(user_perms_ids))}")
+        # all_perms = Permission.objects.all().values_list('codename', 'name')
+        # for a_prm in all_perms:
+        #     print(a_prm)
+        # print("All permissions: ", all_perms)
         # auth_permission_ids = Permission.objects.filter(content_type__app_label='auth').values_list('id', flat=True)
         
         # print(f"SocialMediaPermissions: {social_media_perms}\n{10*'*'}\nall_perms_ids: {permission_ids}")
