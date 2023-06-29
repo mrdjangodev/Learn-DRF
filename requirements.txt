@@ -24,3 +24,4 @@ sqlparse==0.4.4
 tzdata==2023.3
 urllib3==1.26.15
 zipp==3.15.0
+django-admin-interface==0.26.0
